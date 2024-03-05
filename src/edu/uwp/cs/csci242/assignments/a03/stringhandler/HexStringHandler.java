@@ -20,7 +20,7 @@ public class HexStringHandler implements StringHandler, Validator {
     public HexStringHandler() {
         number = 0;
         validHex = true;
-        place = 1;
+        place = 0;
     }
 
     public boolean isValid() {
@@ -37,7 +37,7 @@ public class HexStringHandler implements StringHandler, Validator {
     @Override
     public void processDigit(char c) {
         if( c >= '0' & c <= '9') {
-            number += (int) (Math.pow((double) c, (double) place));
+            number += (c - '0') * (int) (Math.pow((double) NUMBER_SYSTEM, (double) place));
             place++;
         }
     }
@@ -45,15 +45,18 @@ public class HexStringHandler implements StringHandler, Validator {
     @Override
     public void processLetter(char c) {
         if (c >= 'A' & c <= 'F') {
-            number += (int) (Math.pow((double) (c - 'A' + NUMBER_LETTER_MIN), (double) place));
+            number += (c - 'A' + NUMBER_LETTER_MIN) * (int) (Math.pow((double) NUMBER_SYSTEM, (double) place));
             place++;
         }
     }
 
     @Override
     public void processOther(char c) {
-        validHex = false;
+        if(!((c >= 'A' & c <= 'F')|( c >= '0' & c <= '9'))) {
+            validHex = false;
+        }
     }
+
 }
 
 

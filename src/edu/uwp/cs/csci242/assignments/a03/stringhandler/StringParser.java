@@ -1,8 +1,6 @@
 package edu.uwp.cs.csci242.assignments.a03.stringhandler;
 
 /**
- *
- *
  * @author Stevan Jovanovic (jovanovi)
  * @edu.uwp.cs.242.course CSCI 242 - Computer Science II
  * @edu.uwp.cs.242.section 001
@@ -16,22 +14,27 @@ public class StringParser {
         this.handler = handler;
     }
 
-    public void parse(String s) throws Exception {
+    public void parse(String s) {
 
-        char[] c = s.toCharArray();
 
-        if(this.getHandler() instanceof PasswordSecurityHandler) {
-            for(char i: c) {
+        if (this.getHandler() instanceof PasswordSecurityHandler) {
+            char[] c = s.toCharArray();
+            for (char i : c) {
                 getHandler().processDigit(i);
                 getHandler().processLetter(i);
                 getHandler().processOther(i);
             }
-        }
-        else if(this.getHandler() instanceof HexStringHandler) {
+        } else if (this.getHandler() instanceof HexStringHandler) {
+            char[] c = new StringBuilder(s).reverse().toString().toCharArray();
 
-        }
-        else {
-            throw new IllegalStateException("Invalid Handler object");
+            for(char i: c) {
+                getHandler().processOther(i);
+                getHandler().processLetter(i);
+                getHandler().processDigit(i);
+            }
+
+        } else {
+            System.out.println("Uh oh, somethings gone REALLY wrong");
         }
     }
 
